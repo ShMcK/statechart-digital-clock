@@ -4,26 +4,22 @@ import * as React from 'react'
 import styles from 'styled-components'
 
 import Alarm from './Alarm'
-import Digits from './Digits'
-import Meridiem from './Meridiem'
+import Time from './Time'
 
 const Container = styles.div`
-    width:370px;
-	padding:40px;
-	margin:100px auto 60px;
-    position:relative;
-    background-color:#272e38;
-	color:#cacaca;
+    width: 400px;
+	margin: 100px auto 60px;
+    position: relative;
+    background-color: #272e38;
+	color: #cacaca;
+	border-radius: 8px;
 `
 
 const Display = styles.div`
-    text-align:center;
-	padding: 40px 20px 20px;
-	border-radius:6px;
-	position:relative;
-	height: 54px;
+    text-align: center;
+	padding: 0px 20px;
+	position: relative;
 `
-
 interface IState {
 	time: Date
 }
@@ -39,12 +35,10 @@ export default class Clock extends React.Component<{}, IState> {
 	}
 	render() {
 		const { time } = this.state
-		console.log(time)
 		return (
 			<Container>
 				<Display>
-					<Digits time={time} />
-					<Meridiem time={time} />
+					<Time time={time} />
 					<Alarm />
 				</Display>
 			</Container>

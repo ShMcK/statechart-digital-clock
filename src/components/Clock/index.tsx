@@ -1,13 +1,13 @@
 /* styles from https://codepen.io/bsmith/pen/drElg?editors=1100 */
 
 import * as React from 'react'
-import style from 'styled-components'
+import styles from 'styled-components'
 
 import Alarm from './Alarm'
 import Digits from './Digits'
 import Meridiem from './Meridiem'
 
-const Container = style.div`
+const Container = styles.div`
     width:370px;
 	padding:40px;
 	margin:100px auto 60px;
@@ -16,7 +16,7 @@ const Container = style.div`
 	color:#cacaca;
 `
 
-const Display = style.div`
+const Display = styles.div`
     text-align:center;
 	padding: 40px 20px 20px;
 	border-radius:6px;
@@ -24,12 +24,22 @@ const Display = style.div`
 	height: 54px;
 `
 
-export default class Clock extends React.Component {
+interface IState {
+	time: Date
+}
+
+export default class Clock extends React.Component<{}, IState> {
 	state = {
-		time: 'X',
+		time: new Date(),
+	}
+	componentDidMount() {
+		setInterval(() => {
+			this.setState({ time: new Date() })
+		}, 1000)
 	}
 	render() {
 		const { time } = this.state
+		console.log(time)
 		return (
 			<Container>
 				<Display>

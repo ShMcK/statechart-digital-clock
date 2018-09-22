@@ -1,7 +1,7 @@
 import * as React from 'react'
-import style from 'styled-components'
+import styles from 'styled-components'
 
-const Container = style.div`
+const Container = styles.div`
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -9,11 +9,18 @@ const Container = style.div`
 `
 
 interface IProps {
-	time: string
+	time: Date
 }
 
 export default class Meridiem extends React.Component<IProps> {
+	get meridiem() {
+		const hours = this.props.time.getHours()
+		if (hours > 12) {
+			return 'PM'
+		}
+		return 'AM'
+	}
 	render() {
-		return <Container>AM</Container>
+		return <Container>{this.meridiem}</Container>
 	}
 }

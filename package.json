@@ -3,10 +3,13 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"react": "^16.5.2",
-		"react-dom": "^16.5.2",
+		"@avaragado/xstateful": "^0.5.0",
+		"@avaragado/xstateful-react": "^0.6.0",
+		"react": "16.5.2",
+		"react-dom": "16.5.2",
 		"react-scripts-ts": "2.17.0",
-		"styled-components": "^3.4.9"
+		"styled-components": "3.4.9",
+		"xstate": "^3.3.3"
 	},
 	"scripts": {
 		"start": "react-scripts-ts start",
@@ -15,10 +18,10 @@
 		"eject": "react-scripts-ts eject"
 	},
 	"devDependencies": {
-		"@types/jest": "^23.3.2",
-		"@types/node": "^10.10.2",
-		"@types/react": "^16.4.14",
-		"@types/react-dom": "^16.0.7",
-		"typescript": "^3.0.3"
+		"@types/jest": "23.3.2",
+		"@types/node": "^10.10.3",
+		"@types/react": "16.4.14",
+		"@types/react-dom": "16.0.7",
+		"typescript": "3.0.3"
 	}
 }

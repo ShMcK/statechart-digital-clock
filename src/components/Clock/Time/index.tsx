@@ -14,14 +14,6 @@ const DigitContainer = styles.div`
 	margin: 0;
 `
 
-const Digit = ({ value }: { value: string }) => {
-	return (
-		<DigitContainer>
-			<div>{value}</div>
-		</DigitContainer>
-	)
-}
-
 interface IProps {
 	time: Date
 }
@@ -54,8 +46,8 @@ export default class Time extends React.Component<IProps> {
 		]
 		return (
 			<Container>
-				{digits.map((digit) => (
-					<Digit value={digit} />
+				{digits.map((digit, index) => (
+					<DigitContainer key={index}>{digit}</DigitContainer>
 				))}
 				{this.meridiem}
 			</Container>

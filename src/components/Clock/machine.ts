@@ -1,6 +1,20 @@
-import { createStatefulMachine } from '@avaragado/xstateful'
+import { createStatefulMachine, Reducer } from '@avaragado/xstateful'
 import { createReactMachine } from '@avaragado/xstateful-react'
 import { Machine } from 'xstate'
+
+const activities = {
+	snooze: Reducer.util.timeoutActivity({
+		activity: 'snooze',
+		ms: 250,
+		event: 'SNOOZE_END',
+	}),
+}
+
+console.log(activities)
+
+const reducer = Reducer.map({
+	...activities,
+})
 
 const machineState = {
 	key: 'clock',
@@ -19,9 +33,12 @@ const machineState = {
 			states: {
 				Ringing: {
 					activities: ['ring'],
-					on: { SNOOZE: 'Snooze' },
+					on: { SNOOZE: 'Snoozing' },
 				},
-				Snooze: { on: { SNOOZE_END: 'Ringing' } },
+				Snoozing: {
+					on: { SNOOZE_END: 'Ringing' },
+					activities: ['snooze'],
+				},
 			},
 		},
 	},
@@ -29,7 +46,7 @@ const machineState = {
 
 const machine = Machine(machineState)
 
-const xsf = createStatefulMachine({ machine })
+const xsf = createStatefulMachine({ machine, reducer })
 
 const log = ({ state, extstate: xs }: any) => {
 	console.log(

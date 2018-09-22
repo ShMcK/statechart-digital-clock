@@ -3,15 +3,7 @@ import styles from 'styled-components'
 
 const Container = styles.div`
 	font-family: 'Orbitron', sans-serif;
-`
-
-const DigitContainer = styles.div`
-    text-align: left;
-	position: relative;
-	width: 28px;
-	height: 50px;
-	display: inline-block;
-	margin: 0;
+	letter-spacing: 4px;
 `
 
 interface IProps {
@@ -31,9 +23,9 @@ export default class Time extends React.Component<IProps> {
 	get meridiem() {
 		const hours = this.props.time.getHours()
 		if (hours > 12) {
-			return 'P M'
+			return 'PM'
 		}
-		return 'A M'
+		return 'AM'
 	}
 	render() {
 		const digits = [
@@ -42,14 +34,10 @@ export default class Time extends React.Component<IProps> {
 			...this.time('Minutes'),
 			':',
 			...this.time('Seconds'),
-			' ',
 		]
 		return (
 			<Container>
-				{digits.map((digit, index) => (
-					<DigitContainer key={index}>{digit}</DigitContainer>
-				))}
-				{this.meridiem}
+				{digits.map((digit) => digit)} {this.meridiem}
 			</Container>
 		)
 	}

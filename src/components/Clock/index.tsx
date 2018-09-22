@@ -8,8 +8,8 @@ import Ring from './Ring'
 import Time from './Time'
 
 const Container = styles.div`
-	height: 80px;
-    width: 400px;
+	height: 50px;
+    width: 300px;
     position: relative;
     background-color: #272e38;
 	color: #cacaca;
@@ -18,8 +18,11 @@ const Container = styles.div`
 
 const Display = styles.div`
     text-align: center;
-	padding: 0px 20px;
 	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
 `
 
 const AlarmSetIndicator = styles.div`
@@ -47,14 +50,19 @@ export default class Clock extends React.Component<{}, IState> {
 			this.setState({ time: new Date() })
 		}, 1000)
 	}
+	snooze = () => {
+		//
+	}
+	unsnooze = () => {
+		//
+	}
 	render() {
-		const { time } = this.state
 		return (
 			<ClockMachine.Provider>
 				<ClockMachine.Control onDidMount={(props: any) => props.init()}>
 					<Container>
 						<Display>
-							<Time time={time} />
+							<Time time={this.state.time} />
 						</Display>
 						<ClockMachine.State is="AlarmSet">
 							<AlarmSetIndicator />

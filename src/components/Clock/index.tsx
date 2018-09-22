@@ -42,7 +42,11 @@ export default class Clock extends React.Component<{}, IState> {
 	state = {
 		time: new Date(),
 	}
-	componentDidMount() {
+	transition: any
+	snoozeTimer: any
+	init = (props: any) => {
+		this.transition = props.transition
+		props.init()
 		this.ticker()
 	}
 	ticker = () => {
@@ -50,51 +54,49 @@ export default class Clock extends React.Component<{}, IState> {
 			this.setState({ time: new Date() })
 		}, 1000)
 	}
-	snooze = () => {
-		//
+	setAlarm = () => {
+		this.transition('ALARM_TRIGGER')
 	}
-	unsnooze = () => {
-		//
+	unsetAlarm = () => {
+		clearTimeout(this.snoozeTimer)
+		this.transition('ALARM_OFF')
+	}
+	snooze = () => {
+		this.transition('SNOOZE')
+		this.snoozeTimer = setTimeout(() => {
+			this.transition('SNOOZE_END')
+		}, 1000)
 	}
 	render() {
 		return (
 			<ClockMachine.Provider>
-				<ClockMachine.Control onDidMount={(props: any) => props.init()}>
+				<ClockMachine.Control onDidMount={this.init}>
 					<Container>
 						<Display>
 							<Time time={this.state.time} />
+							<ClockMachine.State
+								is="AlarmSet"
+								render={() => <AlarmSetIndicator />}
+							/>
 						</Display>
-						<ClockMachine.State is="AlarmSet">
-							<AlarmSetIndicator />
-						</ClockMachine.State>
 					</Container>
 
 					<div>
 						<ClockMachine.State
 							is="Normal"
-							render={({ transition }: any) => (
-								<button onClick={() => transition('ALARM_TRIGGER')}>
-									Set Alarm
-								</button>
-							)}
+							render={() => <button onClick={this.setAlarm}>Set Alarm</button>}
 						/>
 						<ClockMachine.Activity
 							is="ring"
-							render={({ transition }: any) => (
-								<button onClick={() => transition('SNOOZE')}>Snooze</button>
-							)}
+							render={() => <button onClick={this.snooze}>Snooze</button>}
 						/>
 						<ClockMachine.State
 							is="AlarmSet"
-							render={({ transition }: any) => (
-								<button onClick={() => transition('ALARM_OFF')}>
-									Cancel Alarm
-								</button>
+							render={() => (
+								<button onClick={this.unsetAlarm}>Cancel Alarm</button>
 							)}
 						/>
-						<ClockMachine.Activity is="ring">
-							<Ring />
-						</ClockMachine.Activity>
+						<ClockMachine.Activity is="ring" render={() => <Ring />} />
 					</div>
 				</ClockMachine.Control>
 			</ClockMachine.Provider>

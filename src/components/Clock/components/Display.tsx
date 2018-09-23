@@ -14,7 +14,7 @@ const DisplayScreen = styles.div`
 	position: relative;
 `
 
-export default ({ children }: any) => (
+export default ({ children }) => (
 	<Screen>
 		<DisplayScreen>{children}</DisplayScreen>
 	</Screen>

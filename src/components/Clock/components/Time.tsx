@@ -67,8 +67,8 @@ export default class Time extends React.Component<{}, IState> {
 		return (
 			<Container>
 				<Digits>
-					{digits.map((digit) => (
-						<Digit>{digit}</Digit>
+					{digits.map((digit, index) => (
+						<Digit key={index}>{digit}</Digit>
 					))}
 				</Digits>
 				<Meridiem>{this.meridiem}</Meridiem>

@@ -38,10 +38,12 @@ export default class Clock extends React.Component<{}, IState> {
 						<Time />
 
 						<ClockMachine.State
-							is="AlarmGroup"
-							render={({ state }: any) => (
-								<AlarmSetIndicator ringing={state.activities.ring} />
-							)}
+							is="AlarmGroup.Ringing"
+							render={() => <AlarmSetIndicator ringing />}
+						/>
+						<ClockMachine.State
+							is={['AlarmGroup.AlarmSet', 'AlarmGroup.Snoozing']}
+							render={() => <AlarmSetIndicator />}
 						/>
 
 						<div style={{ position: 'absolute', top: -50 }}>
@@ -54,8 +56,8 @@ export default class Clock extends React.Component<{}, IState> {
 								)}
 							/>
 
-							<ClockMachine.Activity
-								is="ring"
+							<ClockMachine.State
+								is="AlarmGroup.Ringing"
 								render={() => (
 									<Button onClick={this.snooze} color="#FD5F00">
 										Snooze For 3 Seconds
@@ -72,7 +74,10 @@ export default class Clock extends React.Component<{}, IState> {
 								)}
 							/>
 
-							<ClockMachine.Activity is="ring" render={() => <Ring />} />
+							<ClockMachine.State
+								is="AlarmGroup.Ringing"
+								render={() => <Ring />}
+							/>
 						</div>
 					</Display>
 				</ClockMachine.Control>

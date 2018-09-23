@@ -5,6 +5,7 @@
 	"dependencies": {
 		"@avaragado/xstateful": "^0.5.0",
 		"@avaragado/xstateful-react": "^0.6.0",
+		"antd": "^3.9.3",
 		"react": "16.5.2",
 		"react-dom": "16.5.2",
 		"react-scripts-ts": "2.17.0",

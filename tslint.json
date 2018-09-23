@@ -4,6 +4,7 @@
 		"object-literal-sort-keys": false,
 		"member-access": false,
 		"jsx-no-lambda": false,
+		"jsx-boolean-value": false,
 		"no-implicit-dependencies": false,
 		"no-console": false
 	},

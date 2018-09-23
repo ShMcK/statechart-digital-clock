@@ -1,5 +1,5 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import App from './components/App'
+import Clock from './components/Clock'
 
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement)
+ReactDOM.render(<Clock />, document.getElementById('root') as HTMLElement)

@@ -17,7 +17,7 @@ export default class Clock extends React.Component<{}, IState> {
 	setAlarm = () => {
 		this.transition('ALARM_ON')
 		this.alarmTimer = setTimeout(() => {
-			this.transition('ALARM_TRIGGER')
+			this.transition('RING_START')
 		}, 3000)
 	}
 	unsetAlarm = () => {
@@ -25,7 +25,7 @@ export default class Clock extends React.Component<{}, IState> {
 		this.transition('ALARM_OFF')
 	}
 	snooze = () => {
-		this.transition('SNOOZE')
+		this.transition('SNOOZE_START')
 		this.alarmTimer = setTimeout(() => {
 			this.transition('SNOOZE_END')
 		}, 3000)
@@ -38,7 +38,7 @@ export default class Clock extends React.Component<{}, IState> {
 						<Time />
 
 						<ClockMachine.State
-							is="AlarmSet"
+							is="AlarmGroup"
 							render={({ state }: any) => (
 								<AlarmSetIndicator ringing={state.activities.ring} />
 							)}
@@ -64,7 +64,7 @@ export default class Clock extends React.Component<{}, IState> {
 							/>
 
 							<ClockMachine.State
-								is="AlarmSet"
+								is="AlarmGroup"
 								render={() => (
 									<Button onClick={this.unsetAlarm} color="#DD0048">
 										Cancel Alarm

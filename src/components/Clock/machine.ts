@@ -3,26 +3,25 @@ import { createReactMachine } from '@avaragado/xstateful-react'
 import { Machine } from 'xstate'
 
 const machineState = {
-	key: 'clock',
 	initial: 'Normal',
 	states: {
 		Normal: {
 			on: {
-				ALARM_ON: 'AlarmSet',
+				ALARM_ON: 'AlarmGroup',
 			},
 		},
-		AlarmSet: {
-			initial: 'Set',
+		AlarmGroup: {
+			initial: 'AlarmSet',
 			on: {
 				ALARM_OFF: 'Normal',
 			},
 			states: {
-				Set: {
-					on: { ALARM_TRIGGER: 'Ringing' },
+				AlarmSet: {
+					on: { RING_START: 'Ringing' },
 				},
 				Ringing: {
 					activities: ['ring'],
-					on: { SNOOZE: 'Snoozing' },
+					on: { SNOOZE_START: 'Snoozing' },
 				},
 				Snoozing: {
 					on: { SNOOZE_END: 'Ringing' },

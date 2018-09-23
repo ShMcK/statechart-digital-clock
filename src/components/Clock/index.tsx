@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import AlarmSetIndicator from './AlarmSetIndicator'
+import Button from './Button'
 import Display from './Display'
 import ClockMachine from './Machine'
 import Ring from './Ring'
@@ -51,23 +52,27 @@ export default class Clock extends React.Component<{}, IState> {
 							<ClockMachine.State
 								is="Normal"
 								render={() => (
-									<button onClick={this.setAlarm}>
+									<Button onClick={this.setAlarm} color="#49fb35">
 										Set Alarm After 3 Seconds
-									</button>
+									</Button>
 								)}
 							/>
 
 							<ClockMachine.Activity
 								is="ring"
 								render={() => (
-									<button onClick={this.snooze}>Snooze For 3 Seconds</button>
+									<Button onClick={this.snooze} color="#FD5F00">
+										Snooze For 3 Seconds
+									</Button>
 								)}
 							/>
 
 							<ClockMachine.State
 								is="AlarmSet"
 								render={() => (
-									<button onClick={this.unsetAlarm}>Cancel Alarm</button>
+									<Button onClick={this.unsetAlarm} color="#DD0048">
+										Cancel Alarm
+									</Button>
 								)}
 							/>
 

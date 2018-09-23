@@ -7,9 +7,15 @@ const Container = styles.div`
 	color: white;
 `
 
+const Digit = styles.div`
+	display: inline-block;
+	width: ${({ children }) => (children === ':' ? '30px' : '100px')};
+	text-align: center;
+`
+
 const Digits = styles.div`
+	display: inline-block;
 	font-size: 112px;
-	letter-spacing: 4px;
 `
 
 const Meridiem = styles.div`
@@ -60,7 +66,11 @@ export default class Time extends React.Component<{}, IState> {
 		]
 		return (
 			<Container>
-				<Digits>{digits.map((digit) => digit)}</Digits>
+				<Digits>
+					{digits.map((digit) => (
+						<Digit>{digit}</Digit>
+					))}
+				</Digits>
 				<Meridiem>{this.meridiem}</Meridiem>
 			</Container>
 		)

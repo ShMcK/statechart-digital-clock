@@ -8,15 +8,18 @@ const machineState = {
 	states: {
 		Normal: {
 			on: {
-				ALARM_TRIGGER: 'AlarmSet',
+				ALARM_ON: 'AlarmSet',
 			},
 		},
 		AlarmSet: {
-			initial: 'Ringing',
+			initial: 'Set',
 			on: {
 				ALARM_OFF: 'Normal',
 			},
 			states: {
+				Set: {
+					on: { ALARM_TRIGGER: 'Ringing' },
+				},
 				Ringing: {
 					activities: ['ring'],
 					on: { SNOOZE: 'Snoozing' },

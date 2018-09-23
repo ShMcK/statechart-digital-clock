@@ -18,7 +18,10 @@ export default class Clock extends React.Component<{}, IState> {
 		props.init()
 	}
 	setAlarm = () => {
-		this.transition('ALARM_TRIGGER')
+		this.transition('ALARM_ON')
+		setTimeout(() => {
+			this.transition('ALARM_TRIGGER')
+		}, 3000)
 	}
 	unsetAlarm = () => {
 		clearTimeout(this.snoozeTimer)
@@ -28,48 +31,46 @@ export default class Clock extends React.Component<{}, IState> {
 		this.transition('SNOOZE')
 		this.snoozeTimer = setTimeout(() => {
 			this.transition('SNOOZE_END')
-		}, 2000)
+		}, 3000)
 	}
 	render() {
-		/* 1 */
 		return (
 			<ClockMachine.Provider>
-				{/* 2 */}
 				<ClockMachine.Control onDidMount={this.init}>
 					<Display>
 						<Time />
-						{/* 4 */}
+
 						<ClockMachine.State
 							is="AlarmSet"
 							render={({ state }: any) => (
 								<AlarmSetIndicator ringing={state.activities.ring} />
 							)}
 						/>
+
 						<div style={{ position: 'absolute', top: -50 }}>
-							{/* 3 */}
 							<ClockMachine.State
 								is="Normal"
 								render={() => (
-									<button type="primary" onClick={this.setAlarm}>
-										Set Alarm
+									<button onClick={this.setAlarm}>
+										Set Alarm After 3 Seconds
 									</button>
 								)}
 							/>
-							{/* 5 */}
+
 							<ClockMachine.Activity
 								is="ring"
 								render={() => (
-									<button onClick={this.snooze}>Snooze For 2 Seconds</button>
+									<button onClick={this.snooze}>Snooze For 3 Seconds</button>
 								)}
 							/>
-							{/* 7 */}
+
 							<ClockMachine.State
 								is="AlarmSet"
 								render={() => (
 									<button onClick={this.unsetAlarm}>Cancel Alarm</button>
 								)}
 							/>
-							{/* 6 */}
+
 							<ClockMachine.Activity is="ring" render={() => <Ring />} />
 						</div>
 					</Display>

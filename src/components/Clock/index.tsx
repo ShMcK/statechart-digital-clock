@@ -1,11 +1,7 @@
 import * as React from 'react'
 
-import AlarmSetIndicator from './AlarmSetIndicator'
-import Button from './Button'
-import Display from './Display'
+import { AlarmSetIndicator, Button, Display, Ring, Time } from './components'
 import ClockMachine from './Machine'
-import Ring from './Ring'
-import Time from './Time'
 
 interface IState {
 	time: Date

@@ -9,24 +9,24 @@ interface IState {
 
 export default class Clock extends React.Component<{}, IState> {
 	transition: any
-	snoozeTimer: any
+	alarmTimer: any
 	init = (props: any) => {
 		this.transition = props.transition
 		props.init()
 	}
 	setAlarm = () => {
 		this.transition('ALARM_ON')
-		setTimeout(() => {
+		this.alarmTimer = setTimeout(() => {
 			this.transition('ALARM_TRIGGER')
 		}, 3000)
 	}
 	unsetAlarm = () => {
-		clearTimeout(this.snoozeTimer)
+		clearTimeout(this.alarmTimer)
 		this.transition('ALARM_OFF')
 	}
 	snooze = () => {
 		this.transition('SNOOZE')
-		this.snoozeTimer = setTimeout(() => {
+		this.alarmTimer = setTimeout(() => {
 			this.transition('SNOOZE_END')
 		}, 3000)
 	}

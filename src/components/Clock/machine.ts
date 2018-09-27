@@ -20,7 +20,6 @@ const machineState = {
 					on: { RING_START: 'Ringing' },
 				},
 				Ringing: {
-					activities: ['ring'],
 					on: { SNOOZE_START: 'Snoozing' },
 				},
 				Snoozing: {

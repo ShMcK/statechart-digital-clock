@@ -26,11 +26,11 @@ const Meridiem = styles.div`
 	letter-spacing: 5px;
 `
 
-interface IState {
+interface State {
 	time: Date
 }
 
-export default class Time extends React.Component<{}, IState> {
+export default class Time extends React.Component<{}, State> {
 	state = { time: new Date() }
 	componentDidMount() {
 		this.ticker()

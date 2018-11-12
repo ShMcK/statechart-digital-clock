@@ -4,13 +4,12 @@
 	"private": true,
 	"homepage": "https://shmck.github.io/statechart-digital-clock",
 	"dependencies": {
-		"@avaragado/xstateful": "^0.5.0",
-		"@avaragado/xstateful-react": "^0.6.0",
-		"react": "16.5.2",
-		"react-dom": "16.5.2",
+		"glob-to-regexp": "^0.4.0",
+		"react": "^16.7.0-alpha.0",
+		"react-dom": "^16.7.0-alpha.0",
 		"react-scripts-ts": "2.17.0",
 		"styled-components": "3.4.9",
-		"xstate": "^3.3.3"
+		"xstate": "^4.0.1"
 	},
 	"scripts": {
 		"start": "react-scripts-ts start",
@@ -22,10 +21,10 @@
 	},
 	"devDependencies": {
 		"@types/jest": "23.3.2",
-		"@types/node": "^10.10.3",
-		"@types/react": "16.4.14",
+		"@types/node": "^10.12.5",
+		"@types/react": "^16.7.3",
 		"@types/react-dom": "16.0.7",
 		"gh-pages": "^2.0.0",
-		"typescript": "3.0.3"
+		"typescript": "^3.1.6"
 	}
 }

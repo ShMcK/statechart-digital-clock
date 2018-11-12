@@ -6,7 +6,8 @@
 		"jsx-no-lambda": false,
 		"jsx-boolean-value": false,
 		"no-implicit-dependencies": false,
-		"no-console": false
+		"no-console": false,
+		"interface-name": [true, "never-prefix"]
 	},
 	"linterOptions": {
 		"exclude": [

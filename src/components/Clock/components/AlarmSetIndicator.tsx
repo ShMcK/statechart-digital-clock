@@ -31,11 +31,11 @@ const AlarmIcon = () => (
 	</svg>
 )
 
-interface IProps {
+interface Props {
 	ringing: boolean
 }
 
-export default class AlarmSetIndicator extends React.Component<IProps> {
+export default class AlarmSetIndicator extends React.Component<Props> {
 	static defaultProps = {
 		ringing: false,
 	}

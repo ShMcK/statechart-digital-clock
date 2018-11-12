@@ -16,7 +16,10 @@
 		"noImplicitAny": false,
 		"strictNullChecks": true,
 		"suppressImplicitAnyIndexErrors": true,
-		"noUnusedLocals": false
+		"noUnusedLocals": false,
+		"paths": {
+			"reactXState": ["src/lib/reactXState"]
+		}
 	},
 	"exclude": [
 		"node_modules",

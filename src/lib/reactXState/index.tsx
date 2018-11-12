@@ -9,7 +9,9 @@ interface Props {
 
 interface Value {
 	actions: Array<ActionObject<any>>
+	exState: any
 	state: any
+	setExState(state: any): void
 	transition(event: string): void
 }
 
@@ -28,6 +30,10 @@ export default function reactXState({ name, config }: Props) {
 	const Context = React.createContext<Value>({
 		actions: [],
 		state: {},
+		exState: {},
+		setExState(state: any) {
+			return
+		},
 		transition(event: string) {
 			return
 		},
@@ -39,6 +45,7 @@ export default function reactXState({ name, config }: Props) {
 	 */
 	const Provider = (props) => {
 		const [state, setState] = React.useState(stateMachine.initialState.value)
+		const [exState, setExState] = React.useState({})
 
 		let actions: Array<ActionObject<any>> = []
 
@@ -73,6 +80,8 @@ export default function reactXState({ name, config }: Props) {
 			actions,
 			state,
 			transition,
+			exState,
+			setExState,
 		}
 
 		return <Context.Provider value={value}>{props.children}</Context.Provider>
@@ -97,7 +106,13 @@ export default function reactXState({ name, config }: Props) {
 	 * @param props MachineContextProps
 	 */
 	const useMachineContext = (props?: MachineContextProps) => {
-		const { actions, state, transition } = React.useContext(Context)
+		const {
+			actions,
+			state,
+			exState,
+			setExState,
+			transition,
+		} = React.useContext(Context)
 
 		React.useMemo(
 			() => {
@@ -115,6 +130,8 @@ export default function reactXState({ name, config }: Props) {
 		return {
 			state,
 			transition,
+			exState,
+			setExState,
 		}
 	}
 
@@ -129,12 +146,12 @@ export default function reactXState({ name, config }: Props) {
 	 * @param props StateProps
 	 */
 	const State = (props: StateProps) => {
-		const { state, transition } = useMachineContext()
+		const { state, exState, setExState, transition } = useMachineContext()
 		const isMatch = matchesState(props.is, state)
 		if (isMatch) {
 			// allow for child functions
 			if (typeof props.children === 'function') {
-				return props.children({ state, transition })
+				return props.children({ state, transition, exState, setExState })
 			}
 			// without child functions
 			return props.children

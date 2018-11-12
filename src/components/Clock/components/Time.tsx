@@ -26,22 +26,19 @@ const Meridiem = styles.div`
 	letter-spacing: 5px;
 `
 
-interface State {
-	time: Date
-}
+const Time = () => {
+	const [time, setTime]: [Date, (time: Date) => void] = React.useState(
+		new Date(),
+	)
 
-export default class Time extends React.Component<{}, State> {
-	state = { time: new Date() }
-	componentDidMount() {
-		this.ticker()
-	}
-	ticker = () => {
+	React.useEffect(() => {
 		setInterval(() => {
-			this.setState({ time: new Date() })
+			setTime(new Date())
 		}, 1000)
-	}
-	time(type: string) {
-		const timeArray: string[] = this.state.time[`get${type}`]()
+	}, [])
+
+	const getTime = (type: string) => {
+		const timeArray: string[] = time[`get${type}`]()
 			.toString()
 			.split('')
 		if (timeArray.length === 1) {
@@ -49,30 +46,27 @@ export default class Time extends React.Component<{}, State> {
 		}
 		return timeArray
 	}
-	get meridiem() {
-		const hours = this.state.time.getHours()
-		if (hours > 12) {
-			return 'PM'
-		}
-		return 'AM'
-	}
-	render() {
-		const digits = [
-			...this.time('Hours'),
-			':',
-			...this.time('Minutes'),
-			':',
-			...this.time('Seconds'),
-		]
-		return (
-			<Container>
-				<Digits>
-					{digits.map((digit, index) => (
-						<Digit key={index}>{digit}</Digit>
-					))}
-				</Digits>
-				<Meridiem>{this.meridiem}</Meridiem>
-			</Container>
-		)
-	}
+
+	const digits = [
+		...getTime('Hours'),
+		':',
+		...getTime('Minutes'),
+		':',
+		...getTime('Seconds'),
+	]
+
+	const meridiem = time.getHours() > 12 ? 'PM' : 'AM'
+
+	return (
+		<Container>
+			<Digits>
+				{digits.map((digit, index) => (
+					<Digit key={index}>{digit}</Digit>
+				))}
+			</Digits>
+			<Meridiem>{meridiem}</Meridiem>
+		</Container>
+	)
 }
+
+export default Time

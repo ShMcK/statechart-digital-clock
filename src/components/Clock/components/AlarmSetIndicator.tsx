@@ -7,11 +7,15 @@ const blink = keyframes`
 	}
 `
 
+interface Props {
+	ringing?: boolean
+}
+
 const Indicator = styles.div`
 	position: absolute;
 	bottom: -20px;
 	left: 18px;
-	animation: ${(props: { ringing: boolean }) =>
+	animation: ${(props: Props) =>
 		props.ringing ? `1s ${blink} ease-in-out infinite` : 'none'}
 `
 
@@ -31,19 +35,10 @@ const AlarmIcon = () => (
 	</svg>
 )
 
-interface Props {
-	ringing: boolean
-}
+const AlarmSetIndicator = (props: Props) => (
+	<Indicator ringing={props.ringing || false}>
+		<AlarmIcon />
+	</Indicator>
+)
 
-export default class AlarmSetIndicator extends React.Component<Props> {
-	static defaultProps = {
-		ringing: false,
-	}
-	render() {
-		return (
-			<Indicator ringing={this.props.ringing}>
-				<AlarmIcon />
-			</Indicator>
-		)
-	}
-}
+export default React.memo(AlarmSetIndicator)

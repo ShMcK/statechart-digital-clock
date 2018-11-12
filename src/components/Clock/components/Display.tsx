@@ -14,8 +14,10 @@ const DisplayScreen = styles.div`
 	position: relative;
 `
 
-export default ({ children }) => (
+const Display = ({ children }) => (
 	<Screen>
 		<DisplayScreen>{children}</DisplayScreen>
 	</Screen>
 )
+
+export default React.memo(Display)

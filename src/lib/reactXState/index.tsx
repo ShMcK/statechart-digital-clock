@@ -74,8 +74,8 @@ export default function reactXState({ name, config }: Props) {
 				actions = s.actions
 				if (s.changed) {
 					count += 1
+					setState(s.value)
 				}
-				setState(s.value)
 			})
 			// turn off state machine on exit
 			return () => xsf.stop()

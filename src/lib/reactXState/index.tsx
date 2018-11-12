@@ -6,10 +6,13 @@ interface Props {
 	name: string
 	config: MachineConfig<any, any, any>
 	actions?: {
-		[key: string]: (exState: any) => void
+		[key: string]: (exState?: any, action?: ActionObject<any>) => void
 	}
 	activities?: {
-		[key: string]: () => () => void
+		[key: string]: (
+			exState?: any,
+			action?: ActionObject<any>,
+		) => void | (() => void)
 	}
 }
 
@@ -103,7 +106,7 @@ export default function reactXState(props: Props) {
 			() => {
 				actions.forEach((action: ActionObject<any>) => {
 					if (action.exec) {
-						action.exec(exState)
+						action.exec(exState, action)
 					}
 				})
 			},

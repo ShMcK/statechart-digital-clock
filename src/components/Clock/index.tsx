@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { AlarmSetIndicator, Button, Display, Time } from './components'
+import { AlarmIndicator, Button, Display, Time } from './components'
 import ClockMachine from './Machine'
 
 const Clock = () => (
@@ -9,41 +9,39 @@ const Clock = () => (
 			<Time />
 
 			<ClockMachine.State is="AlarmGroup.Ringing">
-				<AlarmSetIndicator ringing />}
+				<AlarmIndicator ringing />}
 			</ClockMachine.State>
 
 			<ClockMachine.State is="AlarmGroup">
-				<AlarmSetIndicator />
+				<AlarmIndicator />
 			</ClockMachine.State>
 
-			<div style={{ position: 'absolute', top: -50 }}>
-				<ClockMachine.State is="Normal">
-					{({ transition }) => (
-						<Button
-							is="Normal"
-							onClick={() => transition('ALARM_ON')}
-							color="#49fb35">
-							Set Alarm After 3 Seconds
-						</Button>
-					)}
-				</ClockMachine.State>
+			<ClockMachine.State is="Normal">
+				{({ transition }) => (
+					<Button onClick={() => transition('ALARM_ON')} color="#49fb35">
+						Set Alarm After 3 Seconds
+					</Button>
+				)}
+			</ClockMachine.State>
 
-				<ClockMachine.State is="AlarmGroup.Ringing">
-					{({ transition }) => (
-						<Button onClick={() => transition('SNOOZE_START')} color="#FD5F00">
-							Snooze For 3 Seconds
-						</Button>
-					)}
-				</ClockMachine.State>
+			<ClockMachine.State is="AlarmGroup.Ringing">
+				{({ transition }) => (
+					<Button
+						style={{ left: 150 }}
+						onClick={() => transition('SNOOZE_START')}
+						color="#FD5F00">
+						Snooze For 3 Seconds
+					</Button>
+				)}
+			</ClockMachine.State>
 
-				<ClockMachine.State is="AlarmGroup">
-					{({ transition }) => (
-						<Button onClick={() => transition('ALARM_OFF')} color="#DD0048">
-							Cancel Alarm
-						</Button>
-					)}
-				</ClockMachine.State>
-			</div>
+			<ClockMachine.State is="AlarmGroup">
+				{({ transition }) => (
+					<Button onClick={() => transition('ALARM_OFF')} color="#DD0048">
+						Cancel Alarm
+					</Button>
+				)}
+			</ClockMachine.State>
 		</Display>
 	</ClockMachine.Provider>
 )

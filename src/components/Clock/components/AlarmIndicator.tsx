@@ -13,8 +13,8 @@ interface Props {
 
 const Indicator = styles.div`
 	position: absolute;
-	bottom: -20px;
-	left: 18px;
+	bottom: -14px;
+	left: 22px;
 	animation: ${(props: Props) =>
 		props.ringing ? `1s ${blink} ease-in-out infinite` : 'none'}
 `
@@ -35,10 +35,10 @@ const AlarmIcon = () => (
 	</svg>
 )
 
-const AlarmSetIndicator = (props: Props) => (
+const AlarmIndicator = (props: Props) => (
 	<Indicator ringing={props.ringing || false}>
 		<AlarmIcon />
 	</Indicator>
 )
 
-export default React.memo(AlarmSetIndicator)
+export default React.memo(AlarmIndicator)

@@ -2,6 +2,9 @@ import reactXState from 'reactXState'
 
 const config = {
 	initial: 'Normal',
+	context: {
+		time: new Date(),
+	},
 	states: {
 		Normal: {
 			on: {
@@ -34,7 +37,11 @@ const config = {
 	},
 }
 
-const actions = {}
+const actions = {
+	tick: () => {
+		console.log('tick')
+	},
+}
 
 const activities = {
 	ring: () => {

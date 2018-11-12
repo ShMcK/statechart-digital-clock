@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { AlarmSetIndicator, Button, Display, Ring, Time } from './components'
+import { AlarmSetIndicator, Button, Display, Time } from './components'
 import ClockMachine from './Machine'
 
 const Clock = () => (
@@ -42,10 +42,6 @@ const Clock = () => (
 							Cancel Alarm
 						</Button>
 					)}
-				</ClockMachine.State>
-
-				<ClockMachine.State is="AlarmGroup.Ringing">
-					<Ring />
 				</ClockMachine.State>
 			</div>
 		</Display>

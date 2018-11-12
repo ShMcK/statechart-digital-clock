@@ -5,6 +5,9 @@ import { interpret } from 'xstate/lib/interpreter'
 interface Props {
 	name: string
 	config: MachineConfig<any, any, any>
+	activities?: {
+		[key: string]: () => () => void
+	}
 }
 
 interface Value {
@@ -15,11 +18,14 @@ interface Value {
 	transition(event: string): void
 }
 
-export default function reactXState({ name, config }: Props) {
+export default function reactXState({ activities, config, name }: Props) {
 	name = name || 'defaultName'
+	activities = activities || {}
 
 	// start machine
-	const stateMachine = Machine<any, any, any>(config)
+	const stateMachine = Machine<any, any, any>(config, {
+		activities,
+	})
 	const xsf = interpret(stateMachine)
 	xsf.start()
 
@@ -115,9 +121,7 @@ export default function reactXState({ name, config }: Props) {
 	const Consumer = Context.Consumer
 
 	interface MachineContextProps {
-		actions?: {
-			[key: string]: () => void
-		}
+		actions?: { [key: string]: () => void }
 	}
 
 	/**
@@ -141,12 +145,7 @@ export default function reactXState({ name, config }: Props) {
 			[count],
 		)
 
-		return {
-			state,
-			transition,
-			exState,
-			setExState,
-		}
+		return { state, transition, exState, setExState }
 	}
 
 	interface StateProps {
@@ -165,7 +164,12 @@ export default function reactXState({ name, config }: Props) {
 		if (isMatch) {
 			// allow for child functions
 			if (typeof props.children === 'function') {
-				return props.children({ state, transition, exState, setExState })
+				return props.children({
+					state,
+					transition,
+					exState,
+					setExState,
+				})
 			}
 			// without child functions
 			return props.children
@@ -175,10 +179,5 @@ export default function reactXState({ name, config }: Props) {
 	}
 	State.displayName = `${name}StateWrapper`
 
-	return {
-		Provider,
-		Consumer,
-		useMachineContext,
-		State,
-	}
+	return { Provider, Consumer, useMachineContext, State }
 }

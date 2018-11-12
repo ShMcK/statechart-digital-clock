@@ -22,6 +22,7 @@ const config = {
 				},
 				Ringing: {
 					on: { SNOOZE_START: 'Snoozing' },
+					activities: ['ring'],
 				},
 				Snoozing: {
 					after: {
@@ -33,7 +34,19 @@ const config = {
 	},
 }
 
+const activities = {
+	ring: () => {
+		const audio = new Audio(`${process.env.PUBLIC_URL}/assets/sounds/alarm.mp3`)
+		audio.loop = true
+		audio.play()
+		return () => {
+			audio.pause()
+		}
+	},
+}
+
 export default reactXState({
 	name: 'alarm',
 	config,
+	activities,
 })

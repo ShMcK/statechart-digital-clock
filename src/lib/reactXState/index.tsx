@@ -25,6 +25,28 @@ export default function reactXState({ name, config }: Props) {
 
 	// track state machine updates
 	let count = 0
+	let transition = (event: string) => {
+		xsf.send(event)
+	}
+
+	// Devtools
+	let unsubscribe
+	let devTools: any
+	if ((window as any).__REDUX_DEVTOOLS_EXTENSION__) {
+		devTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__.connect({
+			name,
+		})
+		devTools.init(stateMachine.initialState.value)
+
+		unsubscribe = devTools.subscribe()
+
+		transition = (event: string) => {
+			const next = xsf.send(event)
+			if (devTools) {
+				devTools.send(event, next.value)
+			}
+		}
+	}
 
 	// create Provider/Consumer context
 	const Context = React.createContext<Value>({
@@ -34,9 +56,7 @@ export default function reactXState({ name, config }: Props) {
 		setExState(state: any) {
 			return
 		},
-		transition(event: string) {
-			return
-		},
+		transition,
 	})
 
 	/**
@@ -48,8 +68,6 @@ export default function reactXState({ name, config }: Props) {
 		const [exState, setExState] = React.useState({})
 
 		let actions: Array<ActionObject<any>> = []
-
-		const transition = (event: string) => xsf.send(event)
 
 		React.useEffect(() => {
 			xsf.onTransition((s) => {
@@ -76,13 +94,15 @@ export default function reactXState({ name, config }: Props) {
 			[count],
 		)
 
-		const value: Value = {
-			actions,
-			state,
-			transition,
-			exState,
-			setExState,
-		}
+		// unsubscribe devtools
+		React.useEffect(
+			() => {
+				return unsubscribe
+			},
+			[count],
+		)
+
+		const value: Value = { actions, state, transition, exState, setExState }
 
 		return <Context.Provider value={value}>{props.children}</Context.Provider>
 	}
@@ -106,13 +126,7 @@ export default function reactXState({ name, config }: Props) {
 	 * @param props MachineContextProps
 	 */
 	const useMachineContext = (props?: MachineContextProps) => {
-		const {
-			actions,
-			state,
-			exState,
-			setExState,
-			transition,
-		} = React.useContext(Context)
+		const { actions, state, exState, setExState } = React.useContext(Context)
 
 		React.useMemo(
 			() => {
@@ -146,7 +160,7 @@ export default function reactXState({ name, config }: Props) {
 	 * @param props StateProps
 	 */
 	const State = (props: StateProps) => {
-		const { state, exState, setExState, transition } = useMachineContext()
+		const { state, exState, setExState } = useMachineContext()
 		const isMatch = matchesState(props.is, state)
 		if (isMatch) {
 			// allow for child functions

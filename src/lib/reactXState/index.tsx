@@ -5,6 +5,9 @@ import { interpret } from 'xstate/lib/interpreter'
 interface Props {
 	name: string
 	config: MachineConfig<any, any, any>
+	actions?: {
+		[key: string]: (exState: any) => void
+	}
 	activities?: {
 		[key: string]: () => () => void
 	}
@@ -18,14 +21,18 @@ interface Value {
 	transition(event: string): void
 }
 
-export default function reactXState({ activities, config, name }: Props) {
-	name = name || 'defaultName'
-	activities = activities || {}
+export default function reactXState(props: Props) {
+	const config = props.config || {}
+	const name = props.name || 'defaultName'
+	const machineActions = props.actions || {}
+	const machineActivities = props.activities || {}
 
 	// start machine
 	const stateMachine = Machine<any, any, any>(config, {
-		activities,
+		actions: machineActions,
+		activities: machineActivities,
 	})
+
 	const xsf = interpret(stateMachine)
 	xsf.start()
 
@@ -69,9 +76,13 @@ export default function reactXState({ activities, config, name }: Props) {
 	 * Context Provider
 	 *
 	 */
-	const Provider = (props) => {
+	interface ProviderProps {
+		children: React.ReactElement<any>
+	}
+
+	const Provider = ({ children }: ProviderProps) => {
 		const [state, setState] = React.useState(stateMachine.initialState.value)
-		const [exState, setExState] = React.useState({})
+		const [exState, setExState] = React.useState(config.context || {})
 
 		let actions: Array<ActionObject<any>> = []
 
@@ -92,15 +103,14 @@ export default function reactXState({ activities, config, name }: Props) {
 			() => {
 				actions.forEach((action: ActionObject<any>) => {
 					if (action.exec) {
-						const context = null
-						action.exec(context)
+						action.exec(exState)
 					}
 				})
 			},
 			[count],
 		)
 
-		// unsubscribe devtools
+		// unsubscribe devtools on exit
 		React.useEffect(
 			() => {
 				return unsubscribe
@@ -110,7 +120,7 @@ export default function reactXState({ activities, config, name }: Props) {
 
 		const value: Value = { actions, state, transition, exState, setExState }
 
-		return <Context.Provider value={value}>{props.children}</Context.Provider>
+		return <Context.Provider value={value}>{children}</Context.Provider>
 	}
 	Provider.displayName = `${name}Provider`
 
@@ -120,24 +130,28 @@ export default function reactXState({ activities, config, name }: Props) {
 	 */
 	const Consumer = Context.Consumer
 
-	interface MachineContextProps {
-		actions?: { [key: string]: () => void }
+	interface UseMachineContextProps {
+		actions?: { [key: string]: (exState: any) => void }
 	}
 
 	/**
 	 * useMachineContext
 	 *
-	 * @param props MachineContextProps
+	 * @param props UseMachineContextProps
 	 */
-	const useMachineContext = (props?: MachineContextProps) => {
+	const useMachineContext = (contextProps?: UseMachineContextProps) => {
 		const { actions, state, exState, setExState } = React.useContext(Context)
 
 		React.useMemo(
 			() => {
 				if (actions.length) {
 					actions.forEach(({ type }) => {
-						if (props && props.actions && props.actions[type]) {
-							props.actions[type]()
+						if (
+							contextProps &&
+							contextProps.actions &&
+							contextProps.actions[type]
+						) {
+							contextProps.actions[type](exState)
 						}
 					})
 				}
@@ -158,13 +172,13 @@ export default function reactXState({ activities, config, name }: Props) {
 	 *
 	 * @param props StateProps
 	 */
-	const State = (props: StateProps) => {
+	const State = ({ is, children }: StateProps) => {
 		const { state, exState, setExState } = useMachineContext()
-		const isMatch = matchesState(props.is, state)
+		const isMatch = matchesState(is, state)
 		if (isMatch) {
 			// allow for child functions
-			if (typeof props.children === 'function') {
-				return props.children({
+			if (typeof children === 'function') {
+				return children({
 					state,
 					transition,
 					exState,
@@ -172,7 +186,7 @@ export default function reactXState({ activities, config, name }: Props) {
 				})
 			}
 			// without child functions
-			return props.children
+			return children
 		}
 		// otherwise return null
 		return null

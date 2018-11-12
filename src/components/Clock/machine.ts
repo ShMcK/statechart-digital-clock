@@ -34,6 +34,8 @@ const config = {
 	},
 }
 
+const actions = {}
+
 const activities = {
 	ring: () => {
 		const audio = new Audio(`${process.env.PUBLIC_URL}/assets/sounds/alarm.mp3`)
@@ -48,5 +50,6 @@ const activities = {
 export default reactXState({
 	name: 'alarm',
 	config,
+	actions,
 	activities,
 })

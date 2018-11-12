@@ -77,6 +77,7 @@ export default function reactXState({ name, config }: Props) {
 
 		return <Context.Provider value={value}>{props.children}</Context.Provider>
 	}
+	Provider.displayName = `${name}Provider`
 
 	/**
 	 * Context Consumer
@@ -141,6 +142,7 @@ export default function reactXState({ name, config }: Props) {
 		// otherwise return null
 		return null
 	}
+	State.displayName = `${name}StateWrapper`
 
 	return {
 		Provider,

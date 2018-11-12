@@ -3,7 +3,7 @@ import * as React from 'react'
 import { AlarmSetIndicator, Button, Display, Ring, Time } from './components'
 import ClockMachine from './Machine'
 
-const Clock = (props) => (
+const Clock = () => (
 	<ClockMachine.Provider>
 		<Display>
 			<Time />

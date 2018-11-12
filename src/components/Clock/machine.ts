@@ -15,13 +15,18 @@ const config = {
 			},
 			states: {
 				AlarmSet: {
+					after: {
+						3000: 'Ringing',
+					},
 					on: { RING_START: 'Ringing' },
 				},
 				Ringing: {
 					on: { SNOOZE_START: 'Snoozing' },
 				},
 				Snoozing: {
-					on: { SNOOZE_END: 'Ringing' },
+					after: {
+						3000: 'Ringing',
+					},
 				},
 			},
 		},

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ActionObject, Machine, MachineConfig, matchesState } from 'xstate'
+import { ActionObject, ExecMeta, Machine, MachineConfig, matchesState } from 'xstate'
 import { interpret } from 'xstate/lib/interpreter'
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.substr(1)
@@ -108,7 +108,7 @@ export default function reactXState(props: Props) {
 			() => {
 				actions.forEach((action: ActionObject<any>) => {
 					if (action.exec) {
-						action.exec(exState, action)
+						action.exec(exState, action, { action })
 					}
 				})
 			},

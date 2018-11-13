@@ -55,7 +55,7 @@ const activities = {
 }
 
 export default reactXState({
-	name: 'alarm',
+	name: 'clock',
 	config,
 	actions,
 	activities,

@@ -2,6 +2,8 @@ import * as React from 'react'
 import { ActionObject, Machine, MachineConfig, matchesState } from 'xstate'
 import { interpret } from 'xstate/lib/interpreter'
 
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.substr(1)
+
 interface Props {
 	name: string
 	config: MachineConfig<any, any, any>
@@ -125,7 +127,7 @@ export default function reactXState(props: Props) {
 
 		return <Context.Provider value={value}>{children}</Context.Provider>
 	}
-	Provider.displayName = `${name}Provider`
+	Provider.displayName = `${capitalize(name)}Provider`
 
 	/**
 	 * Context Consumer
@@ -194,7 +196,7 @@ export default function reactXState(props: Props) {
 		// otherwise return null
 		return null
 	}
-	State.displayName = `${name}StateWrapper`
+	State.displayName = `${capitalize(name)}StateWrapper`
 
 	return { Provider, Consumer, useMachineContext, State }
 }

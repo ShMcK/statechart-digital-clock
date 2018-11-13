@@ -46,4 +46,4 @@ const Clock = () => (
 	</ClockMachine.Provider>
 )
 
-export default Clock
+export default React.memo(Clock)

@@ -5,26 +5,28 @@ const Container = styles.div`
 	position: relative;
 	font-family: 'Orbitron', sans-serif;
 	color: white;
+	height: 112px;
+	width: 660px;
 `
 
-const Digit = styles.div`
+const Digit = React.memo(styles.div`
 	display: inline-block;
 	width: ${({ children }) => (children === ':' ? '30px' : '100px')};
 	text-align: center;
-`
+`)
 
 const Digits = styles.div`
 	display: inline-block;
 	font-size: 112px;
 `
 
-const Meridiem = styles.div`
+const Meridiem = React.memo(styles.div`
 	position: absolute;
 	right: 0;
 	bottom: 10;
 	font-size: 20px;
 	letter-spacing: 5px;
-`
+`)
 
 const Time = () => {
 	const [time, setTime]: [Date, (time: Date) => void] = React.useState(

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ActionObject, ExecMeta, Machine, MachineConfig, matchesState } from 'xstate'
+import { ActionObject, Machine, MachineConfig, matchesState } from 'xstate'
 import { interpret } from 'xstate/lib/interpreter'
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.substr(1)
@@ -142,7 +142,6 @@ export default function reactXState(props: Props) {
 	/**
 	 * useMachineContext
 	 *
-	 * @param props UseMachineContextProps
 	 */
 	const useMachineContext = (contextProps?: UseMachineContextProps) => {
 		const { actions, state, exState, setExState } = React.useContext(Context)
@@ -168,19 +167,33 @@ export default function reactXState(props: Props) {
 	}
 
 	interface StateProps {
-		is: string
+		is?: string | string[]
+		not?: string | string[]
 		children: any
 	}
 
 	/**
 	 * State Component
 	 *
-	 * @param props StateProps
 	 */
-	const State = ({ is, children }: StateProps) => {
+	const State = ({ is, not, children }: StateProps) => {
+		if (!is && !not) {
+			return null
+		}
+
 		const { state, exState, setExState } = useMachineContext()
-		const isMatch = matchesState(is, state)
-		if (isMatch) {
+
+		const findMatch = (field) =>
+			Array.isArray(field)
+				? field.some((val) => matchesState(val, state))
+				: typeof field === 'string'
+				? matchesState(field, state)
+				: false
+
+		const hasMatch = findMatch(is)
+		const cantMatch = findMatch(not)
+
+		if (hasMatch && !cantMatch) {
 			// allow for child functions
 			if (typeof children === 'function') {
 				return children({

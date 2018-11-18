@@ -13,8 +13,8 @@ interface Props {
 
 const Indicator = styles.div`
 	position: absolute;
-	bottom: -14px;
-	left: 22px;
+	bottom: -20px;
+	left: 18px;
 	animation: ${(props: Props) =>
 		props.ringing ? `1s ${blink} ease-in-out infinite` : 'none'}
 `

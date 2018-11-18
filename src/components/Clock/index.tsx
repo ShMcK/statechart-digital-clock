@@ -8,14 +8,6 @@ const Clock = () => (
 		<Display>
 			<Time />
 
-			<ClockMachine.State is="AlarmGroup.Ringing">
-				<AlarmIndicator ringing />}
-			</ClockMachine.State>
-
-			<ClockMachine.State is="AlarmGroup">
-				<AlarmIndicator />
-			</ClockMachine.State>
-
 			<ClockMachine.State is="Normal">
 				{({ transition }) => (
 					<Button onClick={() => transition('ALARM_ON')} color="#49fb35">
@@ -41,6 +33,14 @@ const Clock = () => (
 						Cancel Alarm
 					</Button>
 				)}
+			</ClockMachine.State>
+
+			<ClockMachine.State is="AlarmGroup.Ringing">
+				<AlarmIndicator ringing />
+			</ClockMachine.State>
+
+			<ClockMachine.State is="AlarmGroup" not="AlarmGroup.Ringing">
+				<AlarmIndicator />
 			</ClockMachine.State>
 		</Display>
 	</ClockMachine.Provider>

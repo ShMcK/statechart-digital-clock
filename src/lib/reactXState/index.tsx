@@ -19,7 +19,6 @@ interface Props {
 }
 
 interface Value {
-	actions: Array<ActionObject<any>>
 	exState: any
 	state: any
 	setExState(state: any): void
@@ -68,7 +67,6 @@ export default function reactXState(props: Props) {
 
 	// create Provider/Consumer context
 	const Context = React.createContext<Value>({
-		actions: [],
 		state: {},
 		exState: {},
 		setExState(state: any) {
@@ -85,15 +83,15 @@ export default function reactXState(props: Props) {
 		children: React.ReactElement<any>
 	}
 
+	let currentActions: Array<ActionObject<any>> = []
+
 	const Provider = ({ children }: ProviderProps) => {
 		const [state, setState] = React.useState(stateMachine.initialState.value)
 		const [exState, setExState] = React.useState(config.context || {})
 
-		let actions: Array<ActionObject<any>> = []
-
 		React.useEffect(() => {
 			xsf.onTransition((s) => {
-				actions = s.actions
+				currentActions = s.actions
 				if (s.changed) {
 					count += 1
 					setState(s.value)
@@ -106,7 +104,7 @@ export default function reactXState(props: Props) {
 		// execute statechart actions
 		React.useEffect(
 			() => {
-				actions.forEach((action: ActionObject<any>) => {
+				currentActions.forEach((action: ActionObject<any>) => {
 					if (action.exec) {
 						action.exec(exState, action, { action })
 					}
@@ -123,7 +121,7 @@ export default function reactXState(props: Props) {
 			[count],
 		)
 
-		const value: Value = { actions, state, transition, exState, setExState }
+		const value: Value = { state, transition, exState, setExState }
 
 		return <Context.Provider value={value}>{children}</Context.Provider>
 	}
@@ -144,12 +142,12 @@ export default function reactXState(props: Props) {
 	 *
 	 */
 	const useMachineContext = (contextProps?: UseMachineContextProps) => {
-		const { actions, state, exState, setExState } = React.useContext(Context)
+		const { state, exState, setExState } = React.useContext(Context)
 
 		React.useMemo(
 			() => {
-				if (actions.length) {
-					actions.forEach(({ type }) => {
+				if (currentActions.length) {
+					currentActions.forEach(({ type }) => {
 						if (
 							contextProps &&
 							contextProps.actions &&

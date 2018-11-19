@@ -1,22 +1,22 @@
 import * as React from 'react'
 
+import AlarmMachine from './AlarmMachine'
 import { AlarmIndicator, Button, Display, Time } from './components'
-import ClockMachine from './Machine'
 
 const Clock = () => (
-	<ClockMachine.Provider>
+	<AlarmMachine.Provider>
 		<Display>
 			<Time />
 
-			<ClockMachine.State is="Normal">
+			<AlarmMachine.State is="Normal">
 				{({ transition }) => (
 					<Button onClick={() => transition('ALARM_ON')} color="#49fb35">
 						Set Alarm After 3 Seconds
 					</Button>
 				)}
-			</ClockMachine.State>
+			</AlarmMachine.State>
 
-			<ClockMachine.State is="AlarmGroup.Ringing">
+			<AlarmMachine.State is="AlarmGroup.Ringing">
 				{({ transition }) => (
 					<Button
 						style={{ left: 150 }}
@@ -25,25 +25,25 @@ const Clock = () => (
 						Snooze For 3 Seconds
 					</Button>
 				)}
-			</ClockMachine.State>
+			</AlarmMachine.State>
 
-			<ClockMachine.State is="AlarmGroup">
+			<AlarmMachine.State is="AlarmGroup">
 				{({ transition }) => (
 					<Button onClick={() => transition('ALARM_OFF')} color="#DD0048">
 						Cancel Alarm
 					</Button>
 				)}
-			</ClockMachine.State>
+			</AlarmMachine.State>
 
-			<ClockMachine.State is="AlarmGroup.Ringing">
+			<AlarmMachine.State is="AlarmGroup.Ringing">
 				<AlarmIndicator ringing />
-			</ClockMachine.State>
+			</AlarmMachine.State>
 
-			<ClockMachine.State is="AlarmGroup" not="AlarmGroup.Ringing">
+			<AlarmMachine.State is="AlarmGroup" not="AlarmGroup.Ringing">
 				<AlarmIndicator />
-			</ClockMachine.State>
+			</AlarmMachine.State>
 		</Display>
-	</ClockMachine.Provider>
+	</AlarmMachine.Provider>
 )
 
 export default React.memo(Clock)

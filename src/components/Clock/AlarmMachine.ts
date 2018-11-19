@@ -37,12 +37,6 @@ const config = {
 	},
 }
 
-const actions = {
-	tick: () => {
-		console.log('tick')
-	},
-}
-
 const activities = {
 	ring: () => {
 		const audio = new Audio(`${process.env.PUBLIC_URL}/assets/sounds/alarm.mp3`)
@@ -57,6 +51,5 @@ const activities = {
 export default reactXState({
 	name: 'clock',
 	config,
-	actions,
 	activities,
 })
